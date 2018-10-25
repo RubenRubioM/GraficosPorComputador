@@ -178,9 +178,17 @@ int main(int argc, char* argv[])
     TPrimitiva *casa1= new TPrimitiva(CASA_ID,CASA_ID);
     TPrimitiva *casa2= new TPrimitiva(CASA_ID,CASA_ID);
 
-
-    car1->tx = -4;
-    car1->tz = -10;
+    /*Asignacion de posiciones y rotaciones
+             -z
+              |
+              |
+        -------------
+              |
+              |
+             +z
+    */
+    car1->tx = -40;
+    car1->tz = -50;
     car2->colores[0][0] = 0.3;
     car2->colores[0][1] = 0.8;
     car2->colores[0][2] = 0.4;

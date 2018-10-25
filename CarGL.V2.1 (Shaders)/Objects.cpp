@@ -69,10 +69,6 @@ TPrimitiva::TPrimitiva(int DL, int t)
             break;
 		}
 		case COCHE_ID: { // Creación del coche
-
-		    tx = -2.0;
-		    ty =  0.0;
-		    tz =  0.0;
 		    rr =  0.0;
 
 		    memcpy(colores, coloresc_c, 8*sizeof(float));
@@ -84,18 +80,13 @@ TPrimitiva::TPrimitiva(int DL, int t)
             break;
 		}
 		case CASA_ID: {
-            tx = ty = tz = 0;
-            tx = 10;
-            tz = 10;
-            ry = 180;
+
 
             modelo0 = Load3DS("../../Modelos/casa.3ds",&num_vertices0);
             break;
 		}
 		case STOP_ID: {
-            tx = ty = tz = 0;
 
-            ry = 180;
             modelo0 = Load3DS("../../Modelos/STOP.3ds",&num_vertices0);
             break;
 		}
@@ -134,7 +125,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
         case STOP_ID: {
             // Cálculo de la ModelView
             modelMatrix     = glm::mat4(1.0f); // matriz identidad
-            modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx-8,ty,tz+14));
+            modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
 
             //Antes definimos su rotacion en Y y ahora se la asignamos
             //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
