@@ -179,22 +179,41 @@ int main(int argc, char* argv[])
     TPrimitiva *casa2= new TPrimitiva(CASA_ID,CASA_ID);
 
     /*Asignacion de posiciones y rotaciones
+
              -z
               |
               |
-        -------------
+      -x-------------+x
               |
               |
              +z
+
+    La rotacion para dar la vuelta a algo es en el ry
+
     */
-    car1->tx = -40;
-    car1->tz = -50;
+
+    /*
+
+        Se supone que las valdosas son 0.5 de altas con respecto a la calle
+
+    */
+
+    //Cochecitos
+    car1->tx = +20;
+    car1->tz = -8;
+    car2->tx = +14;
+    car2->tz = -5;
     car2->colores[0][0] = 0.3;
     car2->colores[0][1] = 0.8;
     car2->colores[0][2] = 0.4;
     car2->colores[0][3] = 1.0;
-    car2->tx = 3.5;
-    car2->tz = 4;
+
+    //Casas
+    casa1->tx = +5;
+    casa1->tz = -2;
+    casa2->tx = +30;
+    casa2->tz = -2;
+    casa2->ry = 180;
 
 
     escena.AddObject(road);

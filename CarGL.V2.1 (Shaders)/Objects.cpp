@@ -80,7 +80,8 @@ TPrimitiva::TPrimitiva(int DL, int t)
             break;
 		}
 		case CASA_ID: {
-
+            //asignamos siempre una altura minima para todas los objetos para que no se solape con el suelo
+            ty=0.6;
 
             modelo0 = Load3DS("../../Modelos/casa.3ds",&num_vertices0);
             break;
@@ -123,45 +124,53 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
         }
 
         case STOP_ID: {
-            // Cálculo de la ModelView
-            modelMatrix     = glm::mat4(1.0f); // matriz identidad
-            modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
 
-            //Antes definimos su rotacion en Y y ahora se la asignamos
-            //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
-            modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));
+            if(escena.show_stops){
+                // Cálculo de la ModelView
+                modelMatrix     = glm::mat4(1.0f); // matriz identidad
+                modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
 
-            modelViewMatrix = escena.viewMatrix * modelMatrix;
-            // Envía nuestra ModelView al Vertex Shader
-            glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
+                //Antes definimos su rotacion en Y y ahora se la asignamos
+                //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
+                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));
+
+                modelViewMatrix = escena.viewMatrix * modelMatrix;
+                // Envía nuestra ModelView al Vertex Shader
+                glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
 
 
-            //Asociamos los vértices y sus normales
-            glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0);
-            glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0+3);
+                //Asociamos los vértices y sus normales
+                glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0);
+                glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0+3);
 
-            glDrawArrays(GL_TRIANGLES, 0, num_vertices0);
+                glDrawArrays(GL_TRIANGLES, 0, num_vertices0);
+
+            }
 
             break;
         }
 
         case CASA_ID: {
-            // Cálculo de la ModelView
-            modelMatrix     = glm::mat4(1.0f); // matriz identidad
-            modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
+
+            if(escena.show_casas){
+                // Cálculo de la ModelView
+                modelMatrix     = glm::mat4(1.0f); // matriz identidad
+                modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
+                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));   // en radianes
 
 
+                modelViewMatrix = escena.viewMatrix * modelMatrix;
+                // Envía nuestra ModelView al Vertex Shader
+                glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
 
-            modelViewMatrix = escena.viewMatrix * modelMatrix;
-            // Envía nuestra ModelView al Vertex Shader
-            glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
 
+                //Asociamos los vértices y sus normales
+                glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0);
+                glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0+3);
 
-            //Asociamos los vértices y sus normales
-            glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0);
-            glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0+3);
+                glDrawArrays(GL_TRIANGLES, 0, num_vertices0);
 
-            glDrawArrays(GL_TRIANGLES, 0, num_vertices0);
+            }
 
             break;
         }
@@ -174,7 +183,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
                 // Cálculo de la matriz modelo
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
-                modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx, ty+0.3, tz));
+                modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx, ty+0.4, tz));
 
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
 
@@ -259,10 +268,16 @@ TEscena::TEscena() {
     num_objects = 0;
     num_cars = 0;
 
+    /*
+
+        Aqui inicializamos las variables de la interfaz, como por ejemplo los ticks de mostrar objetos
+
+    */
     show_car = 1;
     show_wheels = 1;
     show_road = 1;
-
+    show_casas = 1;
+    show_stops = 1;
     // live variables usadas por GLUI en TGui
     wireframe = 0;
     z_buffer = 1;
@@ -549,10 +564,12 @@ void __fastcall TGui::Init(int main_window) {
     new GLUI_StaticText( glui, "" );
 
     /***  Rollout de Opciones ***/
-    GLUI_Rollout *options = new GLUI_Rollout(glui, "Opciones", true );
+    GLUI_Rollout *options = new GLUI_Rollout(glui, "Opciones", false );
     new GLUI_Checkbox( options, "Dibujar Coche", &escena.show_car );
     new GLUI_Checkbox( options, "Dibujar Ruedas", &escena.show_wheels );
     new GLUI_Checkbox( options, "Dibujar Carretera", &escena.show_road );
+    new GLUI_Checkbox( options, "Dibujar Casas", &escena.show_casas );
+    new GLUI_Checkbox( options, "Dibujar Stops", &escena.show_stops );
 
 
     /*** Disable/Enable botones ***/

@@ -388,11 +388,11 @@
 	<stdio.h>
 	<malloc.h>
 
-1540222954 source:d:\escritorio\graficosporcomputador\cargl.v2.1 (shaders)\main.cpp
+1540483086 source:d:\escritorio\graficosporcomputador\cargl.v2.1 (shaders)\main.cpp
 	"Objects.h"
 	<GL\glui.h>
 
-1540222943 d:\escritorio\graficosporcomputador\cargl.v2.1 (shaders)\objects.h
+1540484127 d:\escritorio\graficosporcomputador\cargl.v2.1 (shaders)\objects.h
 	"Shader.h"
 	"Program.h"
 	<GL/glui.h>
@@ -411,7 +411,7 @@
 	<vector>
 	<GL/glew.h>
 
-1540480363 source:d:\escritorio\graficosporcomputador\cargl.v2.1 (shaders)\objects.cpp
+1540482736 source:d:\escritorio\graficosporcomputador\cargl.v2.1 (shaders)\objects.cpp
 	"Objects.h"
 	<GL/glui.h>
 	"load3ds.c"
