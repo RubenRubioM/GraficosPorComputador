@@ -154,7 +154,7 @@ int main(int argc, char* argv[])
     glutInitWindowPosition( 50, 50 );
     glutInitWindowSize( 1400, 800 );
 
-    int main_window = glutCreateWindow( "CarGL V2.0 (2015) con Shaders" );
+    int main_window = glutCreateWindow( "Practica 1" );
 
     // Inicializa los valores de OpenGL para esta Aplicación
     escena.InitGL();
@@ -174,10 +174,46 @@ int main(int argc, char* argv[])
     TPrimitiva *road = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
     TPrimitiva *car1 = new TPrimitiva(1, COCHE_ID);
     TPrimitiva *car2 = new TPrimitiva(2, COCHE_ID);
+
     TPrimitiva *stop1 = new TPrimitiva(STOP_ID,STOP_ID);
+
     TPrimitiva *casa1= new TPrimitiva(CASA_ID,CASA_ID);
     TPrimitiva *casa2= new TPrimitiva(CASA_ID,CASA_ID);
+    TPrimitiva *casa3= new TPrimitiva(CASA_ID,CASA_ID);
+    TPrimitiva *casa4= new TPrimitiva(CASA_ID,CASA_ID);
 
+    TPrimitiva *semaforo1 = new TPrimitiva(SEMAFORO_ID,SEMAFORO_ID);
+
+    TPrimitiva *arbol1 = new TPrimitiva(ARBOL_ID,ARBOL_ID);
+    TPrimitiva *arbol2 = new TPrimitiva(ARBOL_ID,ARBOL_ID);
+    TPrimitiva *arbol3 = new TPrimitiva(ARBOL_ID,ARBOL_ID);
+    TPrimitiva *arbol4 = new TPrimitiva(ARBOL_ID,ARBOL_ID);
+    //Arboles de la primera rotonda
+    TPrimitiva *arbol5 = new TPrimitiva(ARBOL_ID,ARBOL_ID); //Cuadrado 2
+    TPrimitiva *arbol6 = new TPrimitiva(ARBOL_ID,ARBOL_ID); //Cuadrado 2
+
+    TPrimitiva *banco1 = new TPrimitiva(BANCO_ID,BANCO_ID); //cuadrado 1
+    TPrimitiva *banco2 = new TPrimitiva(BANCO_ID,BANCO_ID); //cuadrado 2
+    TPrimitiva *banco3 = new TPrimitiva(BANCO_ID,BANCO_ID); //cuadrado 2
+
+    TPrimitiva *papelera1 = new TPrimitiva(PAPELERA_ID,PAPELERA_ID); //cuadrado 1
+
+    TPrimitiva *farola1 = new TPrimitiva(FAROLA_ID,FAROLA_ID); //cuadrado 1
+    TPrimitiva *farola2 = new TPrimitiva(FAROLA_ID,FAROLA_ID); //cuadrado 2
+    TPrimitiva *farola3 = new TPrimitiva(FAROLA_ID,FAROLA_ID); //cuadrado 2
+
+    TPrimitiva *valla1 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla2 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla3 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla4 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla5 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla6 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla7 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla8 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla9 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla10 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla11 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla12 = new TPrimitiva(VALLA_ID,VALLA_ID);
     /*Asignacion de posiciones y rotaciones
 
              -z
@@ -210,16 +246,154 @@ int main(int argc, char* argv[])
 
     //Casas
     casa1->tx = +5;
-    casa1->tz = -2;
+    casa1->tz = -4;
     casa2->tx = +30;
     casa2->tz = -2;
     casa2->ry = 180;
+    casa3->tx = -4;
+    casa3->tz = +5;
+    casa3->ry = 270;
+    casa4->tx = -4;
+    casa4->tz = -4;
+    casa4->ry = 180;
 
-
-    escena.AddObject(road);
-    escena.AddObject(stop1);
     escena.AddObject(casa1);
     escena.AddObject(casa2);
+    escena.AddObject(casa3);
+    escena.AddObject(casa4);
+
+    //Semaforos
+    semaforo1->tx = +31;
+    semaforo1->tz = +9;
+
+    escena.AddObject(semaforo1);
+
+    //STOPS
+    stop1->tx = +9;
+    stop1->tz = +27;
+    stop1->ry = 270;
+
+    escena.AddObject(stop1);
+
+    //Arboles
+    arbol1->tx = +17;
+    arbol1->tz = +12;
+    arbol2->tx = +13;
+    arbol2->tz = +15;
+    arbol2->ry = 80;
+    arbol3->tx = +17;
+    arbol3->tz = +18;
+    arbol3->ry = 260;
+    arbol4->tx = +21;
+    arbol4->tz = +16;
+    arbol4->ry = 250;
+    arbol5->tx = +38;
+    arbol5->tz = +2;
+    arbol5->ry = 250;
+    arbol6->tx = +34;
+    arbol6->tz = +7;
+    arbol6->ry = 30;
+
+
+    escena.AddObject(arbol1);
+    escena.AddObject(arbol2);
+    escena.AddObject(arbol3);
+    escena.AddObject(arbol4);
+    escena.AddObject(arbol5);
+    escena.AddObject(arbol6);
+
+    //Bancos
+    banco1->tx = +5.5;
+    banco1->tz = +5.5;
+    banco1->ry = 310;
+    banco2->tx = +42;
+    banco2->tz = 0;
+    banco3->tx = +36;
+    banco3->tz = +8;
+    banco3->ry = 270;
+
+    escena.AddObject(banco1);
+    escena.AddObject(banco2);
+    escena.AddObject(banco3);
+
+    //Papeleras
+    papelera1->tx = +4.4;
+    papelera1->tz = +6.4;
+    papelera1->ry = 30;
+
+    escena.AddObject(papelera1);
+
+    //Farolas
+    farola1->tx = +3.5;
+    farola1->tz = +9;
+    farola1->ry = 83;
+    farola2->tx = +42.3;
+    farola2->tz = +7.5;
+    farola2->ry = 83;
+    farola3->tx = +38;
+    farola3->tz = -5;
+    farola3->ry = 0;
+
+    escena.AddObject(farola1);
+    escena.AddObject(farola2);
+    escena.AddObject(farola3);
+
+    //Vallas
+    //La longitud de una valla es 4
+    valla1->tx = +35;
+    valla1->tz = +9.5;
+    valla1->ry = 90;
+    valla2->tx = +39;
+    valla2->tz = +9.5;
+    valla2->ry = 90;
+    valla3->tx = +43;
+    valla3->tz = +9.5;
+    valla3->ry = 90;
+    valla4->tx = +43.7;
+    valla4->tz = +8.8;
+    valla4->ry = 0;
+    valla5->tx = +43.7;
+    valla5->tz = +4.8;
+    valla5->ry = 0;
+    valla6->tx = +43.7;
+    valla6->tz = +0.7;
+    valla6->ry = 0;
+    valla7->tx = +43.7;
+    valla7->tz = -3,4;
+    valla7->ry = 0;
+    valla8->tx = +43;
+    valla8->tz = -6.4;
+    valla8->ry = 90;
+    valla9->tx = +39;
+    valla9->tz = -6.4;
+    valla9->ry = 90;
+    valla10->tx = +37;
+    valla10->tz = -6.4;
+    valla10->ry = 90;
+    valla11->tx = +31.8;
+    valla11->tz = +8;
+    valla11->ry = 0;
+    valla12->tx = +31.8;
+    valla12->tz = +4.8;
+    valla12->ry = 0;
+    //Hasta aqui son las del segundo cuadro a la derecha
+
+    escena.AddObject(valla1);
+    escena.AddObject(valla2);
+    escena.AddObject(valla3);
+    escena.AddObject(valla4);
+    escena.AddObject(valla5);
+    escena.AddObject(valla6);
+    escena.AddObject(valla7);
+    escena.AddObject(valla8);
+    escena.AddObject(valla9);
+    escena.AddObject(valla10);
+    escena.AddObject(valla11);
+    escena.AddObject(valla12);
+
+
+    //Resto de objetos
+    escena.AddObject(road);
     escena.AddCar(car1);
     escena.AddCar(car2);
 

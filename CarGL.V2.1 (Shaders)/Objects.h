@@ -22,6 +22,7 @@
 #include "Shader.h"
 #include "Program.h"
 
+#include <string.h>
 #include <GL/glui.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -31,6 +32,12 @@
 #define CARRETERA_ID    10
 #define STOP_ID         11
 #define CASA_ID         12
+#define SEMAFORO_ID     13
+#define ARBOL_ID        14
+#define BANCO_ID        15
+#define PAPELERA_ID     16
+#define FAROLA_ID       17
+#define VALLA_ID        18
 #define COCHE_ID	    100 // Un coche cada 100
 
 // IDs para los callbacks de TGui
@@ -101,7 +108,7 @@ public: // Atributos de la clase
         int     num_cars;       // Número de coches
 
         TPrimitiva  *cars[10];
-        TPrimitiva  *objects[100];
+        TPrimitiva  *objects[200];
 
         // Handles de los attributes y uniforms
         int aPositionLocation;
@@ -133,6 +140,7 @@ public: // Atributos de la clase
         GLfloat mat_specular[4];
         GLfloat mat_shininess[1];
 
+        std::string velocidad;
         float   xy_aspect;
         int     last_x, last_y;
 
@@ -146,6 +154,12 @@ public: // Atributos de la clase
         int     show_road;
         int     show_casas;
         int     show_stops;
+        int     show_semaforos;
+        int     show_arboles;
+        int     show_bancos;
+        int     show_papeleras;
+        int     show_farolas;
+        int     show_vallas;
 
         GLfloat view_position[3];
         GLfloat view_rotate[16];

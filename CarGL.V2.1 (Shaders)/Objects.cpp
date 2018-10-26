@@ -22,7 +22,7 @@
 GLfloat light0_ambient_c[4]  = {   0.2f,   0.2f,  0.2f, 1.0f };
 GLfloat light0_diffuse_c[4]  = {   0.8f,   0.8f,  0.8f, 1.0f };
 GLfloat light0_specular_c[4] = {   1.0f,   1.0f,  1.0f, 1.0f };
-GLfloat light0_position_c[4] = {-100.0f, 100.0f, 50.0f, 1.0f };
+GLfloat light0_position_c[4] = {-10.0f, -10.0f, -30.0f, 1.0f };
 
 GLfloat light1_ambient_c[4]  = {   0.2f,   0.2f,  0.2f, 1.0f };
 GLfloat light1_diffuse_c[4]  = {   0.8f,   0.8f,  0.8f, 1.0f };
@@ -36,7 +36,7 @@ GLfloat mat_shininess_c[1] = { 100.0f };
 
 // Matriz de 4x4 = (I)
 float view_rotate_c[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
-float view_position_c[3] = { 0.0, -2.0, -9.0 };
+float view_position_c[3] = { -30.0, -10.0, -30.0 };
 
 float coloresc_c[2][4] = { {0.8, 0.5, 0.0, 1.0}, {0.5, 0.5, 0.5, 1.0}}; // Color del coche
 float coloresr_c[2][4] = { {0.3, 0.3, 0.3, 1.0}, {1.0, 1.0, 1.0, 1.0}}; // Color de la carretera
@@ -87,8 +87,50 @@ TPrimitiva::TPrimitiva(int DL, int t)
             break;
 		}
 		case STOP_ID: {
-
+            ty=0.6;
             modelo0 = Load3DS("../../Modelos/STOP.3ds",&num_vertices0);
+            break;
+		}
+
+		case SEMAFORO_ID: {
+            ty=0.6;
+
+            modelo0 = Load3DS("../../Modelos/semaforo.3ds",&num_vertices0);
+            break;
+		}
+
+		case ARBOL_ID: {
+            ty=0.6;
+
+            modelo0 = Load3DS("../../Modelos/arbol.3ds",&num_vertices0);
+            break;
+		}
+
+		case BANCO_ID: {
+            ty=0.6;
+
+            modelo0 = Load3DS("../../Modelos/banco.3ds",&num_vertices0);
+            break;
+		}
+
+		case PAPELERA_ID: {
+            ty=0.6;
+
+            modelo0 = Load3DS("../../Modelos/papelera.3ds",&num_vertices0);
+            break;
+		}
+
+		case FAROLA_ID: {
+            ty=0.6;
+
+            modelo0 = Load3DS("../../Modelos/farola.3ds",&num_vertices0);
+            break;
+		}
+
+		case VALLA_ID: {
+            ty=0.9;
+
+            modelo0 = Load3DS("../../Modelos/valla.3ds",&num_vertices0);
             break;
 		}
 	} // switch
@@ -126,6 +168,168 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
         case STOP_ID: {
 
             if(escena.show_stops){
+                // Cálculo de la ModelView
+                modelMatrix     = glm::mat4(1.0f); // matriz identidad
+                modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
+
+                //Antes definimos su rotacion en Y y ahora se la asignamos
+                //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
+                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));
+
+                modelViewMatrix = escena.viewMatrix * modelMatrix;
+                // Envía nuestra ModelView al Vertex Shader
+                glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
+
+
+                //Asociamos los vértices y sus normales
+                glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0);
+                glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0+3);
+
+                glDrawArrays(GL_TRIANGLES, 0, num_vertices0);
+
+            }
+
+            break;
+        }
+
+        case SEMAFORO_ID: {
+
+            if(escena.show_semaforos){
+                // Cálculo de la ModelView
+                modelMatrix     = glm::mat4(1.0f); // matriz identidad
+                modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
+
+                //Antes definimos su rotacion en Y y ahora se la asignamos
+                //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
+                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));
+
+                modelViewMatrix = escena.viewMatrix * modelMatrix;
+                // Envía nuestra ModelView al Vertex Shader
+                glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
+
+
+                //Asociamos los vértices y sus normales
+                glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0);
+                glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0+3);
+
+                glDrawArrays(GL_TRIANGLES, 0, num_vertices0);
+
+            }
+
+            break;
+        }
+
+        case ARBOL_ID: {
+
+            if(escena.show_arboles){
+                // Cálculo de la ModelView
+                modelMatrix     = glm::mat4(1.0f); // matriz identidad
+                modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
+
+                //Antes definimos su rotacion en Y y ahora se la asignamos
+                //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
+                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));
+
+                modelViewMatrix = escena.viewMatrix * modelMatrix;
+                // Envía nuestra ModelView al Vertex Shader
+                glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
+
+
+                //Asociamos los vértices y sus normales
+                glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0);
+                glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0+3);
+
+                glDrawArrays(GL_TRIANGLES, 0, num_vertices0);
+
+            }
+
+            break;
+        }
+
+        case BANCO_ID: {
+
+            if(escena.show_bancos){
+                // Cálculo de la ModelView
+                modelMatrix     = glm::mat4(1.0f); // matriz identidad
+                modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
+
+                //Antes definimos su rotacion en Y y ahora se la asignamos
+                //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
+                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));
+
+                modelViewMatrix = escena.viewMatrix * modelMatrix;
+                // Envía nuestra ModelView al Vertex Shader
+                glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
+
+
+                //Asociamos los vértices y sus normales
+                glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0);
+                glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0+3);
+
+                glDrawArrays(GL_TRIANGLES, 0, num_vertices0);
+
+            }
+
+            break;
+        }
+
+        case PAPELERA_ID: {
+
+            if(escena.show_papeleras){
+                // Cálculo de la ModelView
+                modelMatrix     = glm::mat4(1.0f); // matriz identidad
+                modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
+
+                //Antes definimos su rotacion en Y y ahora se la asignamos
+                //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
+                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));
+
+                modelViewMatrix = escena.viewMatrix * modelMatrix;
+                // Envía nuestra ModelView al Vertex Shader
+                glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
+
+
+                //Asociamos los vértices y sus normales
+                glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0);
+                glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0+3);
+
+                glDrawArrays(GL_TRIANGLES, 0, num_vertices0);
+
+            }
+
+            break;
+        }
+
+        case FAROLA_ID: {
+
+            if(escena.show_farolas){
+                // Cálculo de la ModelView
+                modelMatrix     = glm::mat4(1.0f); // matriz identidad
+                modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
+
+                //Antes definimos su rotacion en Y y ahora se la asignamos
+                //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
+                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));
+
+                modelViewMatrix = escena.viewMatrix * modelMatrix;
+                // Envía nuestra ModelView al Vertex Shader
+                glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
+
+
+                //Asociamos los vértices y sus normales
+                glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0);
+                glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0+3);
+
+                glDrawArrays(GL_TRIANGLES, 0, num_vertices0);
+
+            }
+
+            break;
+        }
+
+         case VALLA_ID: {
+
+            if(escena.show_vallas){
                 // Cálculo de la ModelView
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
                 modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
@@ -204,7 +408,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 // RUEDA Delantera Derecha : Cálculo de la matriz modelo
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
 
-                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx+1.15, ty+0.45, tz+2));
+                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx+1.15, ty+0.5, tz+2));
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(rr), glm::vec3(1,0,0));      // en radianes
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(180.0), glm::vec3(0,0,1));   // en radianes
 
@@ -217,7 +421,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
                 // RUEDA Delantera Izquierda : Cálculo de la matriz modelo
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
-                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx-2, ty+0.45, tz+2));
+                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx-2, ty+0.5, tz+2));
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(rr), glm::vec3(1,0,0));
 
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
@@ -230,7 +434,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 // RUEDA Trasera Derecha : Cálculo de la matriz modelo
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
 
-                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx+1.15, ty+0.45, tz-1.9));
+                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx+1.15, ty+0.5, tz-1.9));
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(rr), glm::vec3(1,0,0));      // en radianes
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(180.0), glm::vec3(0,0,1));   // en radianes
 
@@ -243,7 +447,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
                 // RUEDA Trasera Izquierda : Cálculo de la matriz modelo
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
-                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx-2, ty+0.45, tz-1.9));
+                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx-2, ty+0.5, tz-1.9));
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(rr), glm::vec3(1,0,0));
 
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
@@ -278,6 +482,13 @@ TEscena::TEscena() {
     show_road = 1;
     show_casas = 1;
     show_stops = 1;
+    show_semaforos = 1;
+    show_arboles = 1;
+    show_bancos = 1;
+    show_papeleras = 1;
+    show_farolas = 1;
+    show_vallas = 1;
+
     // live variables usadas por GLUI en TGui
     wireframe = 0;
     z_buffer = 1;
@@ -570,6 +781,12 @@ void __fastcall TGui::Init(int main_window) {
     new GLUI_Checkbox( options, "Dibujar Carretera", &escena.show_road );
     new GLUI_Checkbox( options, "Dibujar Casas", &escena.show_casas );
     new GLUI_Checkbox( options, "Dibujar Stops", &escena.show_stops );
+    new GLUI_Checkbox( options, "Dibujar Semaforos", &escena.show_semaforos );
+    new GLUI_Checkbox( options, "Dibujar Arboles", &escena.show_arboles );
+    new GLUI_Checkbox( options, "Dibujar Bancos", &escena.show_bancos );
+    new GLUI_Checkbox( options, "Dibujar Papeleras", &escena.show_papeleras );
+    new GLUI_Checkbox( options, "Dibujar Farolas", &escena.show_farolas );
+    new GLUI_Checkbox( options, "Dibujar Vallas", &escena.show_vallas );
 
 
     /*** Disable/Enable botones ***/
@@ -583,13 +800,17 @@ void __fastcall TGui::Init(int main_window) {
     // Añade una separación
     new GLUI_StaticText( glui, "" );
 
+
+    // Añade una separación
+    new GLUI_StaticText( glui, "" );
+
     new GLUI_Separator( glui );
 
      // Añade una separación
     new GLUI_StaticText( glui, "" );
 
     new GLUI_StaticText( glui, "  Autor:" );
-    new GLUI_StaticText( glui, "  2012-2016 (C) Juan Antonio Puchol  " );
+    new GLUI_StaticText( glui, "  2018-2019 (C) Ruben Rubio Martinez  " );
 
     // Añade una separación
     new GLUI_StaticText( glui, "" );
@@ -613,13 +834,13 @@ void __fastcall TGui::Init(int main_window) {
     view_rot->set_spin( 1.0 );
     new GLUI_Column( glui2, false );
     GLUI_Translation *trans_xy = new GLUI_Translation(glui2, "Traslacion Escena XY", GLUI_TRANSLATION_XY, escena.view_position );
-    trans_xy->set_speed( .005 );
+    trans_xy->set_speed( .05 );
     new GLUI_Column( glui2, false );
     GLUI_Translation *trans_x =  new GLUI_Translation(glui2, "Traslacion Escena X", GLUI_TRANSLATION_X, escena.view_position );
-    trans_x->set_speed( .005 );
+    trans_x->set_speed( .05 );
     new GLUI_Column( glui2, false );
     GLUI_Translation *trans_y = new GLUI_Translation( glui2, "Traslacion Escena Y", GLUI_TRANSLATION_Y, &escena.view_position[1] );
-    trans_y->set_speed( .005 );
+    trans_y->set_speed( .05 );
     new GLUI_Column( glui2, false );
     GLUI_Translation *trans_z = new GLUI_Translation( glui2, "Traslacion Escena Z", GLUI_TRANSLATION_Z, &escena.scale );
     trans_z->set_speed( .005 );
