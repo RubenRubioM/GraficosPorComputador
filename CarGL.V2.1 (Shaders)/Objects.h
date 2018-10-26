@@ -108,7 +108,7 @@ public: // Atributos de la clase
         int     num_cars;       // Número de coches
 
         TPrimitiva  *cars[10];
-        TPrimitiva  *objects[200];
+        TPrimitiva  *objects[600];
 
         // Handles de los attributes y uniforms
         int aPositionLocation;

@@ -175,33 +175,49 @@ int main(int argc, char* argv[])
     TPrimitiva *car1 = new TPrimitiva(1, COCHE_ID);
     TPrimitiva *car2 = new TPrimitiva(2, COCHE_ID);
 
-    TPrimitiva *stop1 = new TPrimitiva(STOP_ID,STOP_ID);
+    TPrimitiva *stop1 = new TPrimitiva(STOP_ID,STOP_ID); //Cuadrado 3
 
-    TPrimitiva *casa1= new TPrimitiva(CASA_ID,CASA_ID);
-    TPrimitiva *casa2= new TPrimitiva(CASA_ID,CASA_ID);
-    TPrimitiva *casa3= new TPrimitiva(CASA_ID,CASA_ID);
-    TPrimitiva *casa4= new TPrimitiva(CASA_ID,CASA_ID);
+    TPrimitiva *casa1= new TPrimitiva(CASA_ID,CASA_ID); //Cuadrado 1
+    TPrimitiva *casa2= new TPrimitiva(CASA_ID,CASA_ID); //Cuadrado 2
+    TPrimitiva *casa3= new TPrimitiva(CASA_ID,CASA_ID); //Cuadrado 1
+    TPrimitiva *casa4= new TPrimitiva(CASA_ID,CASA_ID); //Cuadrado 1
+    TPrimitiva *casa5= new TPrimitiva(CASA_ID,CASA_ID); //Cuadrado 3
+    TPrimitiva *casa6= new TPrimitiva(CASA_ID,CASA_ID); //Cuadrado 3
+    TPrimitiva *casa7= new TPrimitiva(CASA_ID,CASA_ID); //Cuadrado 3
+    TPrimitiva *casa8= new TPrimitiva(CASA_ID,CASA_ID); //Cuadrado 4
 
     TPrimitiva *semaforo1 = new TPrimitiva(SEMAFORO_ID,SEMAFORO_ID);
 
+    //Arboles de la primera rotonda
     TPrimitiva *arbol1 = new TPrimitiva(ARBOL_ID,ARBOL_ID);
     TPrimitiva *arbol2 = new TPrimitiva(ARBOL_ID,ARBOL_ID);
     TPrimitiva *arbol3 = new TPrimitiva(ARBOL_ID,ARBOL_ID);
     TPrimitiva *arbol4 = new TPrimitiva(ARBOL_ID,ARBOL_ID);
-    //Arboles de la primera rotonda
+
     TPrimitiva *arbol5 = new TPrimitiva(ARBOL_ID,ARBOL_ID); //Cuadrado 2
     TPrimitiva *arbol6 = new TPrimitiva(ARBOL_ID,ARBOL_ID); //Cuadrado 2
+    TPrimitiva *arbol7 = new TPrimitiva(ARBOL_ID,ARBOL_ID); //Cuadrado 3
+    TPrimitiva *arbol8 = new TPrimitiva(ARBOL_ID,ARBOL_ID); //Cuadrado 4
+    TPrimitiva *arbol9 = new TPrimitiva(ARBOL_ID,ARBOL_ID); //Cuadrado 4
+
 
     TPrimitiva *banco1 = new TPrimitiva(BANCO_ID,BANCO_ID); //cuadrado 1
     TPrimitiva *banco2 = new TPrimitiva(BANCO_ID,BANCO_ID); //cuadrado 2
     TPrimitiva *banco3 = new TPrimitiva(BANCO_ID,BANCO_ID); //cuadrado 2
+    TPrimitiva *banco4 = new TPrimitiva(BANCO_ID,BANCO_ID); //cuadrado 4
+    TPrimitiva *banco5 = new TPrimitiva(BANCO_ID,BANCO_ID); //cuadrado 4
 
     TPrimitiva *papelera1 = new TPrimitiva(PAPELERA_ID,PAPELERA_ID); //cuadrado 1
 
     TPrimitiva *farola1 = new TPrimitiva(FAROLA_ID,FAROLA_ID); //cuadrado 1
     TPrimitiva *farola2 = new TPrimitiva(FAROLA_ID,FAROLA_ID); //cuadrado 2
     TPrimitiva *farola3 = new TPrimitiva(FAROLA_ID,FAROLA_ID); //cuadrado 2
+    TPrimitiva *farola4 = new TPrimitiva(FAROLA_ID,FAROLA_ID); //cuadrado 2
+    TPrimitiva *farola5 = new TPrimitiva(FAROLA_ID,FAROLA_ID); //cuadrado 4
+    TPrimitiva *farola6 = new TPrimitiva(FAROLA_ID,FAROLA_ID); //cuadrado 4
+    TPrimitiva *farola7 = new TPrimitiva(FAROLA_ID,FAROLA_ID); //cuadrado 4
 
+    //Vallas del cuadrado 2
     TPrimitiva *valla1 = new TPrimitiva(VALLA_ID,VALLA_ID);
     TPrimitiva *valla2 = new TPrimitiva(VALLA_ID,VALLA_ID);
     TPrimitiva *valla3 = new TPrimitiva(VALLA_ID,VALLA_ID);
@@ -214,6 +230,21 @@ int main(int argc, char* argv[])
     TPrimitiva *valla10 = new TPrimitiva(VALLA_ID,VALLA_ID);
     TPrimitiva *valla11 = new TPrimitiva(VALLA_ID,VALLA_ID);
     TPrimitiva *valla12 = new TPrimitiva(VALLA_ID,VALLA_ID);
+
+    //Vallas del cuadrado 4
+    TPrimitiva *valla13 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla14 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla15 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla16 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla17 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla18= new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla19= new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla20= new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla21= new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla22 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla23 = new TPrimitiva(VALLA_ID,VALLA_ID);
+    TPrimitiva *valla24 = new TPrimitiva(VALLA_ID,VALLA_ID);
+
     /*Asignacion de posiciones y rotaciones
 
              -z
@@ -256,11 +287,28 @@ int main(int argc, char* argv[])
     casa4->tx = -4;
     casa4->tz = -4;
     casa4->ry = 180;
+    casa5->tx = +5;
+    casa5->tz = +35;
+    casa5->ry = 0;
+    casa6->tx = -4;
+    casa6->tz = +25;
+    casa6->ry = 180;
+    casa7->tx = -4;
+    casa7->tz = +35;
+    casa7->ry = 180;
+    casa8->tx = +30;
+    casa8->tz = +33;
+    casa8->ry = 180;
+
 
     escena.AddObject(casa1);
     escena.AddObject(casa2);
     escena.AddObject(casa3);
     escena.AddObject(casa4);
+    escena.AddObject(casa5);
+    escena.AddObject(casa6);
+    escena.AddObject(casa7);
+    escena.AddObject(casa8);
 
     //Semaforos
     semaforo1->tx = +31;
@@ -269,7 +317,7 @@ int main(int argc, char* argv[])
     escena.AddObject(semaforo1);
 
     //STOPS
-    stop1->tx = +9;
+    stop1->tx = +9.4;
     stop1->tz = +27;
     stop1->ry = 270;
 
@@ -278,9 +326,15 @@ int main(int argc, char* argv[])
     //Arboles
     arbol1->tx = +17;
     arbol1->tz = +12;
+    arbol1->sy = 1.3;
+    arbol1->sx = 1.3;
+    arbol1->sz = 1.3;
     arbol2->tx = +13;
     arbol2->tz = +15;
     arbol2->ry = 80;
+    arbol2->sy = 0.7;
+    arbol2->sx = 0.7;
+    arbol2->sz = 0.7;
     arbol3->tx = +17;
     arbol3->tz = +18;
     arbol3->ry = 260;
@@ -293,6 +347,24 @@ int main(int argc, char* argv[])
     arbol6->tx = +34;
     arbol6->tz = +7;
     arbol6->ry = 30;
+    arbol6->sy = 0.7;
+    arbol6->sx = 0.7;
+    arbol6->sz = 0.7;
+    arbol7->tx = +4;
+    arbol7->tz = +22;
+    arbol7->ry = 30;
+    arbol7->sy = 0.7;
+    arbol7->sx = 0.7;
+    arbol7->sz = 0.7;
+    arbol8->tx = +38;
+    arbol8->tz = +28;
+    arbol8->ry = 250;
+    arbol9->tx = +37;
+    arbol9->tz = +33;
+    arbol9->ry = 30;
+    arbol9->sy = 0.7;
+    arbol9->sx = 0.7;
+    arbol9->sz = 0.7;
 
 
     escena.AddObject(arbol1);
@@ -301,6 +373,9 @@ int main(int argc, char* argv[])
     escena.AddObject(arbol4);
     escena.AddObject(arbol5);
     escena.AddObject(arbol6);
+    escena.AddObject(arbol7);
+    escena.AddObject(arbol8);
+    escena.AddObject(arbol9);
 
     //Bancos
     banco1->tx = +5.5;
@@ -311,10 +386,17 @@ int main(int argc, char* argv[])
     banco3->tx = +36;
     banco3->tz = +8;
     banco3->ry = 270;
+    banco4->tx = +42;
+    banco4->tz = +27;
+    banco5->tx = +36;
+    banco5->tz = +35;
+    banco5->ry = 270;
 
     escena.AddObject(banco1);
     escena.AddObject(banco2);
     escena.AddObject(banco3);
+    escena.AddObject(banco4);
+    escena.AddObject(banco5);
 
     //Papeleras
     papelera1->tx = +4.4;
@@ -333,13 +415,30 @@ int main(int argc, char* argv[])
     farola3->tx = +38;
     farola3->tz = -5;
     farola3->ry = 0;
+    farola4->tx = +29;
+    farola4->tz = +5;
+    farola4->ry = 30;
+    farola5->tx = +42.3;
+    farola5->tz = +35;
+    farola5->ry = 83;
+    farola6->tx = +38;
+    farola6->tz = +25;
+    farola6->ry = 0;
+    farola7->tx = +29;
+    farola7->tz = +25;
+    farola7->ry = 330;
 
     escena.AddObject(farola1);
     escena.AddObject(farola2);
     escena.AddObject(farola3);
+    escena.AddObject(farola4);
+    escena.AddObject(farola5);
+    escena.AddObject(farola6);
+    escena.AddObject(farola7);
 
     //Vallas
     //La longitud de una valla es 4
+    //Cuadrado 2
     valla1->tx = +35;
     valla1->tz = +9.5;
     valla1->ry = 90;
@@ -376,7 +475,44 @@ int main(int argc, char* argv[])
     valla12->tx = +31.8;
     valla12->tz = +4.8;
     valla12->ry = 0;
-    //Hasta aqui son las del segundo cuadro a la derecha
+
+    //Cuadrado 4
+    valla13->tx = +35;
+    valla13->tz = +21;
+    valla13->ry = 90;
+    valla14->tx = +39;
+    valla14->tz = +21;
+    valla14->ry = 90;
+    valla15->tx = +43;
+    valla15->tz = +21;
+    valla15->ry = 90;
+    valla16->tx = +43.7;
+    valla16->tz = +24.3;
+    valla16->ry = 0;
+    valla17->tx = +43.7;
+    valla17->tz = +28.3;
+    valla17->ry = 0;
+    valla18->tx = +43.7;
+    valla18->tz = +32.5;
+    valla18->ry = 0;
+    valla19->tx = +43.7;
+    valla19->tz = +36;
+    valla19->ry = 0;
+    valla20->tx = +43;
+    valla20->tz = +37;
+    valla20->ry = 90;
+    valla21->tx = +39;
+    valla21->tz = +37;
+    valla21->ry = 90;
+    valla22->tx = +37;
+    valla22->tz = +37;
+    valla22->ry = 90;
+    valla23->tx = +31.8;
+    valla23->tz = +24;
+    valla23->ry = 0;
+    valla24->tx = +31.8;
+    valla24->tz = +28;
+    valla24->ry = 0;
 
     escena.AddObject(valla1);
     escena.AddObject(valla2);
@@ -390,6 +526,18 @@ int main(int argc, char* argv[])
     escena.AddObject(valla10);
     escena.AddObject(valla11);
     escena.AddObject(valla12);
+    escena.AddObject(valla13);
+    escena.AddObject(valla14);
+    escena.AddObject(valla15);
+    escena.AddObject(valla16);
+    escena.AddObject(valla17);
+    escena.AddObject(valla18);
+    escena.AddObject(valla19);
+    escena.AddObject(valla20);
+    escena.AddObject(valla21);
+    escena.AddObject(valla22);
+    escena.AddObject(valla23);
+    escena.AddObject(valla24);
 
 
     //Resto de objetos

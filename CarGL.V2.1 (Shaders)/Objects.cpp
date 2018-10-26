@@ -36,7 +36,7 @@ GLfloat mat_shininess_c[1] = { 100.0f };
 
 // Matriz de 4x4 = (I)
 float view_rotate_c[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
-float view_position_c[3] = { -30.0, -10.0, -30.0 };
+float view_position_c[3] = { 0.0, -20.0, -70.0 };
 
 float coloresc_c[2][4] = { {0.8, 0.5, 0.0, 1.0}, {0.5, 0.5, 0.5, 1.0}}; // Color del coche
 float coloresr_c[2][4] = { {0.3, 0.3, 0.3, 1.0}, {1.0, 1.0, 1.0, 1.0}}; // Color de la carretera
@@ -176,6 +176,9 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));
 
+                //Escalado
+                modelMatrix     = glm::scale(modelMatrix,glm::vec3(sx,sy,sz));
+
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
                 // Envía nuestra ModelView al Vertex Shader
                 glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
@@ -202,6 +205,9 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 //Antes definimos su rotacion en Y y ahora se la asignamos
                 //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));
+
+                //Escalado
+                modelMatrix     = glm::scale(modelMatrix,glm::vec3(sx,sy,sz));
 
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
                 // Envía nuestra ModelView al Vertex Shader
@@ -230,6 +236,11 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));
 
+                //Escalado
+                modelMatrix     = glm::scale(modelMatrix,glm::vec3(sx,sy,sz));
+
+
+
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
                 // Envía nuestra ModelView al Vertex Shader
                 glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
@@ -256,6 +267,9 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 //Antes definimos su rotacion en Y y ahora se la asignamos
                 //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));
+
+                //Escalado
+                modelMatrix     = glm::scale(modelMatrix,glm::vec3(sx,sy,sz));
 
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
                 // Envía nuestra ModelView al Vertex Shader
@@ -284,6 +298,9 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));
 
+                //Escalado
+                modelMatrix     = glm::scale(modelMatrix,glm::vec3(sx,sy,sz));
+
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
                 // Envía nuestra ModelView al Vertex Shader
                 glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
@@ -311,6 +328,9 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));
 
+                //Escalado
+                modelMatrix     = glm::scale(modelMatrix,glm::vec3(sx,sy,sz));
+
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
                 // Envía nuestra ModelView al Vertex Shader
                 glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
@@ -337,6 +357,9 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 //Antes definimos su rotacion en Y y ahora se la asignamos
                 //Podriamos no asignar rotacion y simplemente pasarle por aqui un valor en grados
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));
+
+                //Escalado
+                modelMatrix     = glm::scale(modelMatrix,glm::vec3(sx,sy,sz));
 
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
                 // Envía nuestra ModelView al Vertex Shader
@@ -388,6 +411,8 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 // Cálculo de la matriz modelo
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
                 modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx, ty+0.4, tz));
+                //Escalado
+                modelMatrix     = glm::scale(modelMatrix,glm::vec3(sx,sy,sz));
 
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
 
@@ -775,7 +800,7 @@ void __fastcall TGui::Init(int main_window) {
     new GLUI_StaticText( glui, "" );
 
     /***  Rollout de Opciones ***/
-    GLUI_Rollout *options = new GLUI_Rollout(glui, "Opciones", false );
+    GLUI_Rollout *options = new GLUI_Rollout(glui, "Opciones", true );
     new GLUI_Checkbox( options, "Dibujar Coche", &escena.show_car );
     new GLUI_Checkbox( options, "Dibujar Ruedas", &escena.show_wheels );
     new GLUI_Checkbox( options, "Dibujar Carretera", &escena.show_road );
