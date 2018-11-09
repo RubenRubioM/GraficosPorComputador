@@ -39,7 +39,15 @@ float view_rotate_c[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 float view_position_c[3] = { 0.0, -20.0, -70.0 };
 
 float coloresc_c[2][4] = { {0.8, 0.5, 0.0, 1.0}, {0.5, 0.5, 0.5, 1.0}}; // Color del coche
-float coloresr_c[2][4] = { {0.3, 0.3, 0.3, 1.0}, {1.0, 1.0, 1.0, 1.0}}; // Color de la carretera
+float coloresr_c[2][4] = { {0.4, 0.3, 0.3, 1.0}, {1.0, 1.0, 1.0, 1.0}}; // Color de la carretera
+float coloresStop_c[2][4] = { {0.93, 0.28, 0.1, 1.0}, {1.0, 1.0, 1.0, 1.0}}; // Color de los stops
+float coloresArbol_c[2][4] = { {0.48, 0.86, 0.4, 1.0}, {1.0, 1.0, 1.0, 1.0}}; // Color de los arboles
+float coloresCasa_c[2][4] = { {0.84, 0.8, 0.54, 1.0}, {1.0, 1.0, 1.0, 1.0}}; // Color de las casas
+float coloresSemaforo_c[2][4] = { {0.78, 0.78, 0.78, 1.0}, {1.0, 1.0, 1.0, 1.0}}; // Color de los semaforos
+float coloresBanco_c[2][4] = { {0.44, 0.4, 0.14, 1.0}, {1.0, 1.0, 1.0, 1.0}}; // Color de los bancos
+float coloresPapelera_c[2][4] = { {0.33, 0.51, 0.32, 1.0}, {1.0, 1.0, 1.0, 1.0}}; // Color de las papeleras
+float coloresFarola_c[2][4] = { {0.83, 0.83, 0.83, 1.0}, {1.0, 1.0, 1.0, 1.0}}; // Color de las farolas
+float coloresValla_c[2][4] = { {0.53, 0.5, 0.17, 1.0}, {1.0, 1.0, 1.0, 1.0}}; // Color de las vallas
 
 //************************************************************** Variables de clase
 
@@ -82,54 +90,55 @@ TPrimitiva::TPrimitiva(int DL, int t)
 		case CASA_ID: {
             //asignamos siempre una altura minima para todas los objetos para que no se solape con el suelo
             ty=0.6;
-
+            memcpy(colores, coloresCasa_c, 8*sizeof(float));
             modelo0 = Load3DS("../../Modelos/casa.3ds",&num_vertices0);
             break;
 		}
 		case STOP_ID: {
             ty=0.6;
+            memcpy(colores, coloresStop_c, 8*sizeof(float));
             modelo0 = Load3DS("../../Modelos/STOP.3ds",&num_vertices0);
             break;
 		}
 
 		case SEMAFORO_ID: {
             ty=0.6;
-
+            memcpy(colores, coloresSemaforo_c, 8*sizeof(float));
             modelo0 = Load3DS("../../Modelos/semaforo.3ds",&num_vertices0);
             break;
 		}
 
 		case ARBOL_ID: {
             ty=0.6;
-
+            memcpy(colores, coloresArbol_c, 8*sizeof(float));
             modelo0 = Load3DS("../../Modelos/arbol.3ds",&num_vertices0);
             break;
 		}
 
 		case BANCO_ID: {
             ty=0.6;
-
+            memcpy(colores, coloresBanco_c, 8*sizeof(float));
             modelo0 = Load3DS("../../Modelos/banco.3ds",&num_vertices0);
             break;
 		}
 
 		case PAPELERA_ID: {
             ty=0.6;
-
+            memcpy(colores, coloresPapelera_c, 8*sizeof(float));
             modelo0 = Load3DS("../../Modelos/papelera.3ds",&num_vertices0);
             break;
 		}
 
 		case FAROLA_ID: {
             ty=0.6;
-
+            memcpy(colores, coloresFarola_c, 8*sizeof(float));
             modelo0 = Load3DS("../../Modelos/farola.3ds",&num_vertices0);
             break;
 		}
 
 		case VALLA_ID: {
             ty=0.9;
-
+            memcpy(colores, coloresValla_c, 8*sizeof(float));
             modelo0 = Load3DS("../../Modelos/valla.3ds",&num_vertices0);
             break;
 		}
@@ -140,19 +149,25 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 {
     glm::mat4   modelMatrix;
     glm::mat4   modelViewMatrix;
+
+
+
+
     switch (tipo) {
 
         case CARRETERA_ID: {
             if (escena.show_road) {
+                    glUniform4fv(escena.uColorLocation,1,colores[0]);
                 // Cálculo de la ModelView
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
+
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
                 // Envía nuestra ModelView al Vertex Shader
                 glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
 
                 // Pintar la carretera
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
-                //                   Asociamos los vértices y sus normales
+                //Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0+3);
 
@@ -168,6 +183,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
         case STOP_ID: {
 
             if(escena.show_stops){
+                    glUniform4fv(escena.uColorLocation,1,colores[0]);
                 // Cálculo de la ModelView
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
                 modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
@@ -198,6 +214,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
         case SEMAFORO_ID: {
 
             if(escena.show_semaforos){
+                    glUniform4fv(escena.uColorLocation,1,colores[0]);
                 // Cálculo de la ModelView
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
                 modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
@@ -228,6 +245,8 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
         case ARBOL_ID: {
 
             if(escena.show_arboles){
+
+                glUniform4fv(escena.uColorLocation,1,colores[0]);
                 // Cálculo de la ModelView
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
                 modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
@@ -260,6 +279,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
         case BANCO_ID: {
 
             if(escena.show_bancos){
+                    glUniform4fv(escena.uColorLocation,1,colores[0]);
                 // Cálculo de la ModelView
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
                 modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
@@ -290,6 +310,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
         case PAPELERA_ID: {
 
             if(escena.show_papeleras){
+                    glUniform4fv(escena.uColorLocation,1,colores[0]);
                 // Cálculo de la ModelView
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
                 modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
@@ -320,6 +341,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
         case FAROLA_ID: {
 
             if(escena.show_farolas){
+                    glUniform4fv(escena.uColorLocation,1,colores[0]);
                 // Cálculo de la ModelView
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
                 modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
@@ -350,6 +372,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
          case VALLA_ID: {
 
             if(escena.show_vallas){
+                    glUniform4fv(escena.uColorLocation,1,colores[0]);
                 // Cálculo de la ModelView
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
                 modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
@@ -379,7 +402,9 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
         case CASA_ID: {
 
+
             if(escena.show_casas){
+                    glUniform4fv(escena.uColorLocation,1,colores[0]);
                 // Cálculo de la ModelView
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
                 modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx,ty,tz));
@@ -403,6 +428,8 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
         }
         case COCHE_ID: {
             if (escena.show_car) {
+
+
                 glUniform4fv(escena.uColorLocation, 1, (const GLfloat *) colores[0]);
                 // Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0);
@@ -420,6 +447,8 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices0);
+
+
             }
 
 
@@ -670,6 +699,25 @@ void __fastcall TEscena::RenderObjects(bool reflejo) {
 
 void __fastcall TEscena::Render()
 {
+
+
+    if(escena.primeraPersona){
+        //Obtenemos el coche
+        TPrimitiva *cam = NULL;
+        cam = GetCar(seleccion);
+
+        //Situamos camara detrás del coche
+        if(cam)
+        {
+            printf("UWUWUWUWUUWW");
+            float angulo = (cam->ry*PI)/180.0;
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            //PosCamX,PosCamY,PosCamZ,  DondeMiraX,DondeMiraY,DondeMiraZ,   0,1,0(direccion arriba camara)
+            gluLookAt(cam->tx+sin(angulo),cam->ty+2,cam->tz+cos(angulo),cam->tx+5*sin(angulo),cam->ty+2,cam->tz+5*cos(angulo),0,1,0);
+        }
+    }
+
     glm::mat4 rotateMatrix;
 
     glClearColor(0.0, 0.7, 0.9, 1.0);
@@ -706,6 +754,7 @@ TGui::TGui()
 {
     sel = 1;
     enable_panel2 = 1;
+
     light0_enabled = 1;
     light1_enabled = 1;
     light0_intensity = 0.8;
@@ -752,6 +801,7 @@ void __fastcall TGui::Init(int main_window) {
     /***** Control para las propiedades de escena *****/
 
     new GLUI_Checkbox( obj_panel, "Modo Alambrico", &escena.wireframe, 1, controlCallback );
+
     glui->add_column_to_panel(obj_panel, true);
     new GLUI_Checkbox( obj_panel, "Culling", &escena.culling, 1, controlCallback );
     new GLUI_Checkbox( obj_panel, "Z Buffer", &escena.z_buffer, 1, controlCallback );
@@ -812,6 +862,8 @@ void __fastcall TGui::Init(int main_window) {
     new GLUI_Checkbox( options, "Dibujar Papeleras", &escena.show_papeleras );
     new GLUI_Checkbox( options, "Dibujar Farolas", &escena.show_farolas );
     new GLUI_Checkbox( options, "Dibujar Vallas", &escena.show_vallas );
+    new GLUI_Checkbox( options, "PRimera persona", &escena.primeraPersona );
+
 
 
     /*** Disable/Enable botones ***/

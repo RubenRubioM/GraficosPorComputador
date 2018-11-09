@@ -28,6 +28,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+//Constantes
+#define PI  3.14159265358979
+
 // Identificadores internos de los objetos
 #define CARRETERA_ID    10
 #define STOP_ID         11
@@ -161,6 +164,9 @@ public: // Atributos de la clase
         int     show_farolas;
         int     show_vallas;
 
+        int     primeraPersona;
+
+
         GLfloat view_position[3];
         GLfloat view_rotate[16];
         float   scale;
@@ -193,6 +199,7 @@ public:
         // live variables usadas por GLUI
         int             sel;
         int             enable_panel2;
+
         int             light0_enabled;
         int             light1_enabled;
         float           light0_intensity;
