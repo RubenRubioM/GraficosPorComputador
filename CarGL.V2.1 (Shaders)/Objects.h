@@ -30,6 +30,9 @@
 
 //Constantes
 #define PI  3.14159265358979
+#define velocidadCoche  0.3
+#define rozamiento    0.06
+#define rotacionRueda    45
 
 // Identificadores internos de los objetos
 #define CARRETERA_ID    10
@@ -76,6 +79,14 @@
 #define U_VMATRIX               "u_VMatrix"
 #define U_COLOR                 "u_Color"
 #define U_LUZ0                  "u_Luz0"
+//Propiedades
+#define WIREFRAME_ID         600
+#define CULLING_ID           601
+#define ZBUFFER_ID           602
+//Camaras
+#define V_AEREA              411
+#define V_SEGUIMIENTO        412
+#define V_PRIMERAPERSONA     413
 
 //************************************************************** Clase TPrimtiva
 
@@ -89,6 +100,9 @@ public: // Atributos de la clase
 		float rx,ry,rz;     	// Rotación del objeto
 		float rr;               // Rotación de las ruedas
 		float colores[2][4];    // Color RGB y canal Alfa
+		float v;                 // Velocidad del coche
+		float anguloCoche;
+		float anguloRuedas;
 
 		float   *modelo0;        // modelo a representar
 		int     num_vertices0;   // número de vértices
@@ -109,9 +123,12 @@ public: // Atributos de la clase
 		int   	seleccion;   	// Objeto seleccionado, 0=ninguno
         int		num_objects;    // Número de objetos (excepto coches)
         int     num_cars;       // Número de coches
+        int     raton;
 
         TPrimitiva  *cars[10];
         TPrimitiva  *objects[600];
+
+        int ultimoSelec;
 
         // Handles de los attributes y uniforms
         int aPositionLocation;
@@ -143,7 +160,7 @@ public: // Atributos de la clase
         GLfloat mat_specular[4];
         GLfloat mat_shininess[1];
 
-        std::string velocidad;
+
         float   xy_aspect;
         int     last_x, last_y;
 
@@ -164,7 +181,10 @@ public: // Atributos de la clase
         int     show_farolas;
         int     show_vallas;
 
-        int     primeraPersona;
+        int tipoVista;
+        int camaraSeguimiento;
+        int vistaAerea;
+        int primeraPersona;
 
 
         GLfloat view_position[3];
@@ -213,6 +233,7 @@ public:
         GLUI_RadioGroup *radio;
         GLUI_Panel      *obj_panel;
         GLUI_Rotation   *view_rot;
+
 
 public:
         TGui();

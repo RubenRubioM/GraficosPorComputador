@@ -73,8 +73,6 @@
 #include "Objects.h"
 #include <GL\glui.h>
 
-#define velocidadCoche  0.3
-#define rotacionRueda 40
 
 /**************************************** myGlutKeyboard() **********/
 
@@ -101,12 +99,22 @@ static void SpecialKey(int key, int x, int y)
     switch (key)
     {
         case GLUT_KEY_UP:   // El coche avanza
-            car->rr+=rotacionRueda;
-            car->tz += velocidadCoche;
+            if(car->v<1){
+              car->v += velocidadCoche;
+            }
             break;
         case GLUT_KEY_DOWN:   // El coche retrocede
-            car->rr-=rotacionRueda;
-            car->tz -= velocidadCoche;
+            if(car->v>-1){
+              car->v -= velocidadCoche;
+            }
+            break;
+        case GLUT_KEY_LEFT:   // Giramos ruedas
+            if(car->anguloRuedas < 45)
+                car->anguloRuedas += 1;
+            break;
+        case GLUT_KEY_RIGHT:
+            if(car->anguloRuedas > -45)
+                car->anguloRuedas -= 1;
             break;
 
     }

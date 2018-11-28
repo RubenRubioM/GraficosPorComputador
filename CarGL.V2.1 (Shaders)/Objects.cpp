@@ -61,7 +61,7 @@ TPrimitiva::TPrimitiva(int DL, int t)
 
     ID   = DL;
     tipo = t;
-
+    anguloRuedas=0;
     sx = sy = sz = 1;
     rx = ry = rz = 0;
 	switch (tipo) {
@@ -78,6 +78,7 @@ TPrimitiva::TPrimitiva(int DL, int t)
 		}
 		case COCHE_ID: { // Creación del coche
 		    rr =  0.0;
+		    ty=0.6;
 
 		    memcpy(colores, coloresc_c, 8*sizeof(float));
 
@@ -429,6 +430,37 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
         case COCHE_ID: {
             if (escena.show_car) {
 
+                if( v != 0)
+                {
+
+                    float angulo = (ry*PI)/180.0;
+
+
+                    float coseno = cos(angulo);
+                    float seno = sin(angulo);
+
+                    //Aqui movemos el coche
+                    tz += v * coseno;
+                    tx += v * seno;
+
+
+                    rr += v*rotacionRueda;
+
+                    if(v > 0){
+                        v -= rozamiento;
+
+                        if(v<=0)
+                            v=0;
+                    }
+                    else if(v < 0){
+                        v += rozamiento;
+
+                        if(v >= 0)
+                            v = 0;
+                    }
+                    ry += (anguloRuedas * v);
+                }
+
 
                 glUniform4fv(escena.uColorLocation, 1, (const GLfloat *) colores[0]);
                 // Asociamos los vértices y sus normales
@@ -440,7 +472,8 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx, ty+0.4, tz));
                 //Escalado
                 modelMatrix     = glm::scale(modelMatrix,glm::vec3(sx,sy,sz));
-
+                //rotacion
+                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));      // en radianes
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
 
                 // Envía nuestra ModelView al Vertex Shader
@@ -464,6 +497,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
                 modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx+1.15, ty+0.5, tz+2));
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(rr), glm::vec3(1,0,0));      // en radianes
+                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(anguloRuedas), glm::vec3(0,1,0));      // en radianes
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(180.0), glm::vec3(0,0,1));   // en radianes
 
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
@@ -477,6 +511,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
                 modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx-2, ty+0.5, tz+2));
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(rr), glm::vec3(1,0,0));
+                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(anguloRuedas), glm::vec3(0,1,0));      // en radianes
 
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
 
@@ -504,6 +539,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx-2, ty+0.5, tz-1.9));
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(rr), glm::vec3(1,0,0));
 
+
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
 
                 // Envia nuestra ModelView al Vertex Shader
@@ -523,6 +559,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 TEscena::TEscena() {
 
     seleccion = 1;
+    ultimoSelec = 0;
     num_objects = 0;
     num_cars = 0;
 
@@ -534,14 +571,19 @@ TEscena::TEscena() {
     show_car = 1;
     show_wheels = 1;
     show_road = 1;
-    show_casas = 1;
-    show_stops = 1;
-    show_semaforos = 1;
-    show_arboles = 1;
-    show_bancos = 1;
-    show_papeleras = 1;
-    show_farolas = 1;
-    show_vallas = 1;
+    show_casas = 0;
+    show_stops = 0;
+    show_semaforos = 0;
+    show_arboles = 0;
+    show_bancos = 0;
+    show_papeleras = 0;
+    show_farolas = 0;
+    show_vallas = 0;
+
+    tipoVista = 0;
+    primeraPersona = 0;
+    camaraSeguimiento = 0;
+    vistaAerea = 0;
 
     // live variables usadas por GLUI en TGui
     wireframe = 0;
@@ -700,8 +742,42 @@ void __fastcall TEscena::RenderObjects(bool reflejo) {
 void __fastcall TEscena::Render()
 {
 
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
-    if(escena.primeraPersona){
+    // Transformación del escenario
+    glTranslatef( view_position[0], view_position[1], view_position[2] );   // Traslación
+    glMultMatrixf(view_rotate);                                             // Rotación
+    glScalef(scale, scale, scale);                                          // Escalado
+
+    if(escena.camaraSeguimiento==1)
+    {
+        TPrimitiva *cam = NULL;
+        cam = GetCar(seleccion);   //Obtenemos el coche
+
+        if(cam)     //Situamos camara detrás del coche
+        {
+            float angulo = (cam->ry*PI)/180.0;
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            gluLookAt(cam->tx-20*sin(angulo),cam->ty+10,cam->tz-20*cos(angulo),cam->tx,cam->ty+5,cam->tz,0,1,0);
+        }
+    }else if(escena.vistaAerea == 1)
+    {
+        //Obtenemos el coche
+        TPrimitiva *cam = NULL;
+        cam = GetCar(seleccion);
+
+        //Situamos camara arriba del coche
+        if(cam)
+        {
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            //PosCamX,PosCamY,PosCamZ,  DondeMiraX,DondeMiraY,DondeMiraZ,   0,1,0
+            gluLookAt(cam->tx,cam->ty+150,cam->tz,cam->tx,cam->ty,cam->tz,0,0,1);
+        }
+    }else if(escena.primeraPersona == 1)
+    {
         //Obtenemos el coche
         TPrimitiva *cam = NULL;
         cam = GetCar(seleccion);
@@ -709,7 +785,6 @@ void __fastcall TEscena::Render()
         //Situamos camara detrás del coche
         if(cam)
         {
-            printf("UWUWUWUWUUWW");
             float angulo = (cam->ry*PI)/180.0;
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
@@ -746,6 +821,7 @@ void __fastcall TEscena::Render()
 // Selecciona un objeto a través del ratón
 void __fastcall TEscena::Pick3D(int mouse_x, int mouse_y)
 {
+
 }
 
 //************************************************************** Clase TGui
@@ -800,11 +876,11 @@ void __fastcall TGui::Init(int main_window) {
 
     /***** Control para las propiedades de escena *****/
 
-    new GLUI_Checkbox( obj_panel, "Modo Alambrico", &escena.wireframe, 1, controlCallback );
+    new GLUI_Checkbox( obj_panel, "Modo Wireframe", &escena.wireframe, WIREFRAME_ID, controlCallback );
 
     glui->add_column_to_panel(obj_panel, true);
-    new GLUI_Checkbox( obj_panel, "Culling", &escena.culling, 1, controlCallback );
-    new GLUI_Checkbox( obj_panel, "Z Buffer", &escena.z_buffer, 1, controlCallback );
+    new GLUI_Checkbox( obj_panel, "Culling", &escena.culling, CULLING_ID, controlCallback );
+    new GLUI_Checkbox( obj_panel, "Z Buffer", &escena.z_buffer, ZBUFFER_ID, controlCallback );
 
     /******** Añade controles para las luces ********/
 
@@ -845,6 +921,12 @@ void __fastcall TGui::Init(int main_window) {
                             &escena.light1_position[2],LIGHT1_POSITION_ID,controlCallback);
     sb->set_float_limits(-100,100);
 
+    new GLUI_StaticText( glui, "" );
+
+    GLUI_Rollout *camaras = new GLUI_Rollout(glui, "Camaras", false );
+    new GLUI_Button( camaras, "Vista Seguimiento", V_SEGUIMIENTO, controlCallback );
+    new GLUI_Button( camaras, "Primera Persona", V_PRIMERAPERSONA, controlCallback );
+    new GLUI_Button( camaras, "Vista Aerea", V_AEREA, controlCallback );
 
     // Añade una separación
     new GLUI_StaticText( glui, "" );
@@ -862,7 +944,6 @@ void __fastcall TGui::Init(int main_window) {
     new GLUI_Checkbox( options, "Dibujar Papeleras", &escena.show_papeleras );
     new GLUI_Checkbox( options, "Dibujar Farolas", &escena.show_farolas );
     new GLUI_Checkbox( options, "Dibujar Vallas", &escena.show_vallas );
-    new GLUI_Checkbox( options, "PRimera persona", &escena.primeraPersona );
 
 
 
@@ -929,6 +1010,36 @@ void __fastcall TGui::Init(int main_window) {
 void __fastcall TGui::ControlCallback( int control )
 {
     switch (control) {
+        case WIREFRAME_ID:{
+
+            //MODO ALAMBRICO
+            if(escena.wireframe)
+            {
+                glPolygonMode(GL_FRONT, GL_LINE);//DELANTERO
+                glPolygonMode(GL_BACK, GL_LINE);//TRASERO
+            }
+            else
+            {
+                glPolygonMode(GL_FRONT, GL_FILL);
+                glPolygonMode(GL_BACK, GL_FILL);
+            }
+            break;
+        }
+        case CULLING_ID: {
+            if(escena.culling){
+                glEnable(GL_CULL_FACE);
+                glCullFace(GL_FRONT);
+            }
+            else
+                glDisable(GL_CULL_FACE);
+            break;
+        }case ZBUFFER_ID: {
+            if(escena.z_buffer)
+                glEnable(GL_DEPTH_TEST);
+            else
+                glDisable(GL_DEPTH_TEST);
+            break;
+        }
         case LIGHT0_ENABLED_ID: {
             if ( light0_enabled )
                 light0_spinner->enable();
@@ -974,6 +1085,7 @@ void __fastcall TGui::ControlCallback( int control )
             break;
         }
         case RESET_ID: {
+
             memcpy(escena.view_position,view_position_c,3*sizeof(float));
             view_rot->reset();
             escena.scale = 1.0;
@@ -983,6 +1095,62 @@ void __fastcall TGui::ControlCallback( int control )
             escena.seleccion = sel;
             //GLUI_Master.SetFocus(true);
             glutSetWindow( glui->get_glut_window_id() );
+            break;
+        }
+        case V_SEGUIMIENTO:{
+
+            escena.seleccion = escena.ultimoSelec;
+
+            if(escena.camaraSeguimiento)
+            {
+                escena.camaraSeguimiento=0;
+                escena.seleccion=0;
+            }else{
+                if(escena.seleccion != 0) //Anulamos las otras vistas
+                {
+                    escena.camaraSeguimiento=1;
+                    escena.vistaAerea=0;
+                    escena.primeraPersona=0;
+                }
+            }
+            break;
+        }
+        case V_AEREA:{
+            escena.seleccion = escena.ultimoSelec;
+
+            if(escena.vistaAerea)
+            {
+                escena.vistaAerea=0;
+                escena.seleccion=0;
+            }else{
+                //Anulamos las otras vistas
+                if(escena.seleccion != 0)
+                {
+                    escena.tipoVista=0;
+                    escena.vistaAerea=1;
+                    escena.camaraSeguimiento=0;
+                    escena.primeraPersona=0;
+                }
+            }
+            break;
+        }
+        case V_PRIMERAPERSONA:{
+            escena.seleccion = escena.ultimoSelec;
+
+            if(escena.primeraPersona)
+            {
+                escena.primeraPersona=0;
+                escena.seleccion=0;
+            }
+            else{
+                if(escena.seleccion != 0)
+                {
+                    escena.tipoVista=0;
+                    escena.primeraPersona=1;
+                    escena.vistaAerea=0;
+                    escena.camaraSeguimiento=0;
+                }
+            }
             break;
         }
   } // switch
