@@ -770,10 +770,11 @@ void __fastcall TEscena::Render()
         case 0: {
             TPrimitiva *coche = GetCar(seleccion);
             if(coche){
-                float cX = coche->tx-5.0*sin(glm::radians(0.0));
-                float cZ = coche->tz-5.0*cos(glm::radians(0.0));
+                float cX = coche->tx-20.0*sin(glm::radians(0.0));
+                float cZ = coche->tz-20.0*cos(glm::radians(0.0));
+                float angulo = (coche->ry*PI)/180.0;
 
-                viewMatrix = glm::lookAt(glm::vec3(cX,50,cZ), glm::vec3(coche->tx,coche->ty,coche->tz),glm::vec3(0,1,0));
+                viewMatrix = glm::lookAt(glm::vec3(cX*sin(angulo),10,cZ*cos(angulo)), glm::vec3(coche->tx,coche->ty,coche->tz),glm::vec3(0,1,0));
 
             }
             break;
@@ -806,8 +807,9 @@ void __fastcall TEscena::Render()
         //Camara 1º Persona
         case 3: {
             TPrimitiva *coche = GetCar(seleccion);
+            float angulo = (coche->ry*PI)/180.0;
             if(coche){
-
+                 viewMatrix = glm::lookAt(glm::vec3(coche->tx+sin(angulo),coche->ty+3,coche->tz*cos(angulo)),glm::vec3(coche->tx+5*sin(angulo),5,coche->tz+5*cos(angulo)),glm::vec3(0,1,0));
             }
         }
     }
