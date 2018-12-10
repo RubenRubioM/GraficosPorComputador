@@ -391,12 +391,12 @@
 	<stdio.h>
 	<malloc.h>
 
-1543913898 source:f:\cargl.v2.1 (shaders) sin texturas\main.cpp
+1544472174 source:f:\cargl.v2.1 (shaders) sin texturas\main.cpp
 	"Objects.h"
 	"loadjpeg.c"
 	<GL\glui.h>
 
-1543950276 f:\cargl.v2.1 (shaders) sin texturas\objects.h
+1544472036 f:\cargl.v2.1 (shaders) sin texturas\objects.h
 	"Shader.h"
 	"Program.h"
 	<string.h>
@@ -420,7 +420,7 @@
 	<stdio.h>
 	<malloc.h>
 
-1543950092 source:f:\cargl.v2.1 (shaders) sin texturas\objects.cpp
+1544471504 source:f:\cargl.v2.1 (shaders) sin texturas\objects.cpp
 	"Objects.h"
 	<GL/glui.h>
 	<iostream>

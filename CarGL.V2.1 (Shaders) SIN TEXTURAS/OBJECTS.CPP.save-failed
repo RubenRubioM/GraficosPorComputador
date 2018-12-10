@@ -561,7 +561,6 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx-2, ty+0.5, tz-2));
                 modelMatrix     = glm::translate(modelMatrix, glm::vec3(+2, 0, +2));
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(ry), glm::vec3(0,1,0));   // en radianes
-                modelMatrix     = glm::translate(modelMatrix, glm::vec3(-2, 0, -2));
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(rr), glm::vec3(1,0,0));
 
 

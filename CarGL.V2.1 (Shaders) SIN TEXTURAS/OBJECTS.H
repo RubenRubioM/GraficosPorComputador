@@ -30,7 +30,7 @@
 
 //Constantes
 #define PI  3.14159265358979
-#define velocidadCoche  0.3
+#define velocidadCoche  0.6
 #define rozamiento    0.06
 #define rotacionRueda    45
 
@@ -48,12 +48,8 @@
 #define COCHE_ID	    100 // Un coche cada 100
 
 // IDs para los callbacks de TGui
-#define LIGHT0_ENABLED_ID    200
-#define LIGHT1_ENABLED_ID    201
-#define LIGHT0_POSITION_ID   210
-#define LIGHT1_POSITION_ID   211
-#define LIGHT0_INTENSITY_ID  220
-#define LIGHT1_INTENSITY_ID  221
+
+
 
 
 #define ENABLE_ID            300
@@ -80,13 +76,55 @@
 #define U_MVMATRIX              "u_MVMatrix"
 #define U_VMATRIX               "u_VMatrix"
 #define U_COLOR                 "u_Color"
-#define U_LUZ0                  "u_Luz0"
+
 #define U_SAMPLER               "u_Sampler"
+
+//Cosas para luz 0
+#define U_LUZ0                  "u_Luz0"
+
+#define U_LIGHT0_X               "u_Light0_x"
+#define U_LIGHT0_Y               "u_Light0_y"
+#define U_LIGHT0_Z               "u_Light0_z"
+#define U_LIGHT0_I               "u_Light0_i"
+
+#define LIGHT0_ENABLED_ID    200
+#define LIGHT0_POSITION_ID   210
+#define LIGHT0_INTENSITY_ID  220
+
+//Cosas para luz 1
+#define U_LUZ1                  "u_Luz1"
+
+#define U_LIGHT1_X               "u_Light1_x"
+#define U_LIGHT1_Y               "u_Light1_y"
+#define U_LIGHT1_Z               "u_Light1_z"
+#define U_LIGHT1_I               "u_Light1_i"
+
+#define LIGHT1_ENABLED_ID    201
+#define LIGHT1_POSITION_ID   211
+#define LIGHT1_INTENSITY_ID  221
+
+//Cosas para luz 2
+#define U_LUZ2                  "u_Luz2"
+
+#define U_LIGHT2_X               "u_Light2_x"
+#define U_LIGHT2_Y               "u_Light2_y"
+#define U_LIGHT2_Z               "u_Light2_z"
+#define U_LIGHT2_I               "u_Light2_i"
+
+#define LIGHT2_ENABLED_ID    202
+#define LIGHT2_POSITION_ID   212
+#define LIGHT2_INTENSITY_ID  222
+
+#define U_LUZ_ESPECULAR           "u_luz_especular"
 
 //Propiedades
 #define WIREFRAME_ID         600
 #define CULLING_ID           601
 #define ZBUFFER_ID           602
+#define SOMBREADO_ID         603
+#define SENTIDO_ID           604
+#define VISUALIZACION_ID     605
+#define LUZ_ESPECULAR_ID     606
 
 #define CAM_ID               420
 
@@ -108,10 +146,7 @@ public: // Atributos de la clase
 		float v;                 // Velocidad del coche
 		float anguloCoche;
 		float anguloRuedas;
-		float txRuedaDI;
-		float tzRuedaDI;
-		float txRuedaDD;
-		float tzRuedaDD;
+
 
 		float   *modelo0;        // modelo a representar
 		int     num_vertices0;   // n�mero de v�rtices
@@ -159,8 +194,34 @@ public: // Atributos de la clase
         int uMVMatrixLocation;
 		int uVMatrixLocation;
 		int uColorLocation;
-		int uLuz0Location;
 		int seleccionarLocation;
+
+		//Cosas necesarias para la Luz0
+
+		int uLight0_xLocation;             //Posicion en x de la luz 0 para el vertexShader
+		int uLight0_yLocation;             //Posicion en y de la luz 0 para el vertexShader
+		int uLight0_zLocation;             //Posicion en z de la luz 0 para el vertexShader
+		int uLight0_iLocation;             //Intensidad de la luz
+		int uLuz0Location;
+
+		//Cosas necesarias para la Luz1
+
+		int uLight1_xLocation;             //Posicion en x de la luz 0 para el vertexShader
+		int uLight1_yLocation;             //Posicion en y de la luz 0 para el vertexShader
+		int uLight1_zLocation;             //Posicion en z de la luz 0 para el vertexShader
+		int uLight1_iLocation;             //Intensidad de la luz
+		int uLuz1Location;
+
+		//Cosas necesarias para la Luz2
+
+		int uLight2_xLocation;             //Posicion en x de la luz 0 para el vertexShader
+		int uLight2_yLocation;             //Posicion en y de la luz 0 para el vertexShader
+		int uLight2_zLocation;             //Posicion en z de la luz 0 para el vertexShader
+		int uLight2_iLocation;             //Intensidad de la luz
+		int uLuz2Location;
+
+		int luzEspecular;
+		int uLuzEspecularLocation;
 
 		glm::mat4 projectionMatrix; // Almacena la matriz de proyecci�n
         glm::mat4 viewMatrix;       // Almacena la matriz de la vista (c�mara)
@@ -171,12 +232,17 @@ public: // Atributos de la clase
         GLfloat light0_ambient[4];
         GLfloat light0_diffuse[4];
         GLfloat light0_specular[4];
-        GLfloat light0_position[4];
+        GLfloat light0_position[4]; //Posicion de la camara que lo recoge el spinner
 
         GLfloat light1_ambient[4];
         GLfloat light1_diffuse[4];
         GLfloat light1_specular[4];
         GLfloat light1_position[4];
+
+        GLfloat light2_ambient[4];
+        GLfloat light2_diffuse[4];
+        GLfloat light2_specular[4];
+        GLfloat light2_position[4];
 
         GLfloat mat_ambient[4];
         GLfloat mat_diffuse[4];
@@ -191,6 +257,7 @@ public: // Atributos de la clase
         int     wireframe;
         int     z_buffer;
         int     culling;
+        int     sombreado;
 
         int     show_car;
         int     show_wheels;
@@ -203,6 +270,12 @@ public: // Atributos de la clase
         int     show_papeleras;
         int     show_farolas;
         int     show_vallas;
+
+        int     reflejo; // reflejos
+        int     tipoVista;
+        int     sentido;
+
+        int     visualizacion;
 
 
         int     mode_cam;
@@ -228,6 +301,7 @@ public: // M�todos
 		TPrimitiva __fastcall *GetCar(int id);
 
 		void __fastcall Pick3D(int mouse_x, int mouse_y);
+		void __fastcall renderSeleccion();
 
 
 
@@ -246,14 +320,18 @@ public:
 
         int             light0_enabled;
         int             light1_enabled;
+        int             light2_enabled;
         float           light0_intensity;
         float           light1_intensity;
+        float           light2_intensity;
         float           light0_position[4];
         float           light1_position[4];
+        float           light2_position[4];
 
         GLUI            *glui, *glui2;
         GLUI_Spinner    *light0_spinner;
         GLUI_Spinner    *light1_spinner;
+        GLUI_Spinner    *light2_spinner;
         GLUI_RadioGroup *radio;
         GLUI_Panel      *obj_panel;
         GLUI_Rotation   *view_rot;

@@ -19,6 +19,20 @@ void Keyboard(unsigned char Key, int x, int y)
             exit(0);
             break;
 
+        case 'O':
+        case 'o':
+            //Como no se ve bien, desactivamos la vista Ortog para PrimeraPersona y VistaAerea
+            escena.tipoVista=1;
+            gui.Reshape(x,y);//Paralela
+
+            break;
+
+        case 'P':
+        case 'p':
+            escena.tipoVista=0;
+            gui.Reshape(x,y);//Perspectiva
+            break;
+
     }
 
     glutPostRedisplay();
@@ -29,27 +43,44 @@ void Keyboard(unsigned char Key, int x, int y)
 static void SpecialKey(int key, int x, int y)
 {
     TPrimitiva *car = escena.GetCar(escena.seleccion);
-
+    float gradosRotacion = car->ry*PI/180.0;
+        float seno = sin(gradosRotacion);
+        float coseno = cos(gradosRotacion);
     switch (key)
     {
-        case GLUT_KEY_UP:   // El coche avanza
-            if(car->v<1){
-              car->v += velocidadCoche;
-            }
+
+
+        case GLUT_KEY_UP: {
+            car->rr += rotacionRueda;
+              car->tx += velocidadCoche*seno;
+              car->tz += velocidadCoche*coseno;
+              car->ry += 0.03*car->anguloRuedas;
             break;
-        case GLUT_KEY_DOWN:   // El coche retrocede
-            if(car->v>-1){
-              car->v -= velocidadCoche;
-            }
+        }
+
+        case GLUT_KEY_DOWN: {
+
+              car->rr -= rotacionRueda;
+              car->tx -= velocidadCoche*seno;
+              car->tz -= velocidadCoche*coseno;
+              car->ry -= 0.03*car->anguloRuedas;
             break;
-        case GLUT_KEY_LEFT:   // Giramos ruedas
+        }
+
+        case GLUT_KEY_LEFT:  {
             if(car->anguloRuedas < 45)
-                car->anguloRuedas += 1;
+                car->anguloRuedas += 3;
             break;
-        case GLUT_KEY_RIGHT:
+        }
+
+        case GLUT_KEY_RIGHT: {
             if(car->anguloRuedas > -45)
-                car->anguloRuedas -= 1;
+                car->anguloRuedas -= 3;
             break;
+        }
+
+
+
 
     }
 
@@ -99,8 +130,8 @@ int main(int argc, char* argv[])
     // Inicializa GLUT and crea la ventana principal
     glutInit(&argc, argv);
     glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL | GLUT_MULTISAMPLE );
-    glutInitWindowPosition( 100, 50 );
-    glutInitWindowSize( 1600, 800 );
+    glutInitWindowPosition( 200, 200 );
+    glutInitWindowSize( 1200, 800 );
 
     int main_window = glutCreateWindow( "Practica 1" );
 
